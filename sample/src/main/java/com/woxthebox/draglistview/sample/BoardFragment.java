@@ -21,6 +21,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -50,6 +51,8 @@ import com.woxthebox.draglistview.DragItem;
 
 import java.util.ArrayList;
 
+import timber.log.Timber;
+
 public class BoardFragment extends Fragment {
 
     private static int sCreatedItems = 0;
@@ -72,11 +75,12 @@ public class BoardFragment extends Fragment {
         View view = inflater.inflate(R.layout.board_layout, container, false);
 
         mBoardView = view.findViewById(R.id.board_view);
-        mBoardView.setSnapToColumnsWhenScrolling(true);
-        mBoardView.setSnapToColumnWhenDragging(true);
-        mBoardView.setSnapDragItemToTouch(true);
+        mBoardView.setSnapToColumnsWhenScrolling(false);
+        mBoardView.setSnapToColumnWhenDragging(false);
+        mBoardView.setSnapDragItemToTouch(false);
         mBoardView.setSnapToColumnInLandscape(false);
-        mBoardView.setColumnSnapPosition(BoardView.ColumnSnapPosition.CENTER);
+//        mBoardView.setColumnSnapPosition(BoardView.ColumnSnapPosition.CENTER);
+
         mBoardView.setBoardListener(new BoardView.BoardListener() {
             @Override
             public void onItemDragStarted(int column, int row) {
@@ -127,6 +131,7 @@ public class BoardFragment extends Fragment {
             @Override
             public boolean canDragItemAtPosition(int column, int dragPosition) {
                 // Add logic here to prevent an item to be dragged
+                Log.d(this.getClass().getSimpleName(), "position: "+ dragPosition);
                 return true;
             }
 
@@ -198,7 +203,7 @@ public class BoardFragment extends Fragment {
     private void resetBoard() {
         mBoardView.clearBoard();
         mBoardView.setCustomDragItem(mGridLayout ? null : new MyDragItem(getActivity(), R.layout.column_item));
-        mBoardView.setCustomColumnDragItem(mGridLayout ? null : new MyColumnDragItem(getActivity(), R.layout.column_drag_layout));
+//        mBoardView.setCustomColumnDragItem(mGridLayout ? null : new MyColumnDragItem(getActivity(), R.layout.column_drag_layout));
         addColumn();
         addColumn();
         addColumn();
@@ -243,8 +248,9 @@ public class BoardFragment extends Fragment {
                 .setColumnBackgroundColor(Color.TRANSPARENT)
                 .setItemsSectionBackgroundColor(Color.TRANSPARENT)
                 .setHeader(header)
+
                 .setFooter(footer)
-                .setColumnDragView(header)
+//                .setColumnDragView(header)
                 .build();
 
         mBoardView.addColumn(columnProperties);

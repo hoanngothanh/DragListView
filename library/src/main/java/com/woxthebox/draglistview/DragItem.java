@@ -24,12 +24,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 
 public class DragItem {
     protected static final int ANIMATION_DURATION = 250;
+    private static final String TAG = "DragItem";
     private View mDragView;
     private View mRealDragView;
 
@@ -127,6 +129,7 @@ public class DragItem {
     }
 
     void startDrag(View startFromView, float touchX, float touchY) {
+
         show();
         mRealDragView = startFromView;
         onBindDragView(startFromView, mDragView);
@@ -142,15 +145,20 @@ public class DragItem {
             mPosTouchDx = 0;
             mPosTouchDy = 0;
             setPosition(touchX, touchY);
-            setAnimationDx(mRealStartX - touchX);
-            setAnimationDY(mRealStartY - touchY);
-
-            PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("AnimationDx", mAnimationDx, 0);
-            PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("AnimationDY", mAnimationDy, 0);
-            ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(this, pvhX, pvhY);
-            anim.setInterpolator(new DecelerateInterpolator());
-            anim.setDuration(ANIMATION_DURATION);
-            anim.start();
+//            setAnimationDx(mRealStartX - touchX);
+//            setAnimationDY(mRealStartY - touchY);
+//
+//            PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("AnimationDx", mAnimationDx, 0);
+//            PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("AnimationDY", mAnimationDy, 0);
+//            ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(this, pvhX, pvhY);
+//            anim.setInterpolator(new DecelerateInterpolator());
+//            anim.setDuration(ANIMATION_DURATION);
+//            anim.start();
+            Log.d(TAG, String.format("touchX : %s, touchY: %s", touchX, touchY));
+            Log.d(TAG, String.format("startFromViewX : %s, startFromViewY: %s", startFromView.getX(), startFromView.getY()));
+            Log.d(TAG, String.format("startFromView.getMeasuredWidth() : %s, startFromViewY: %s", startFromView.getX(), startFromView.getY()));
+            Log.d(TAG, String.format("mDragView.getMeasuredWidth() : %s, mDragView.getMeasuredHeight(): %s", mDragView.getMeasuredWidth(), mDragView.getMeasuredHeight()));
+            Log.d(TAG, String.format("mRealStartX : %s, mDragView.getMeasuredHeight(): %s", mRealStartX, mRealStartY));
         } else {
             mPosTouchDx = mRealStartX - touchX;
             mPosTouchDy = mRealStartY - touchY;
@@ -232,7 +240,8 @@ public class DragItem {
 
     private void updatePosition() {
         if (mCanDragHorizontally) {
-            mDragView.setX(mPosX + mOffsetX + mAnimationDx - mDragView.getMeasuredWidth() / 2f);
+            Log.i(TAG,String.format("mPosX %s  mOffsetX %s mAnimationDx %s mDragView.getMeasuredWidth() %s",mPosX , mOffsetX , mAnimationDx , mDragView.getMeasuredWidth()));
+            mDragView.setX(mPosX + mOffsetX + mAnimationDx - (mDragView.getMeasuredWidth()*4)/5);
         }
         if (mCanDragVertically) {
             mDragView.setY(mPosY + mOffsetY + mAnimationDy - mDragView.getMeasuredHeight() / 2f);
