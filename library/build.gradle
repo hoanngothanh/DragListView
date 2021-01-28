@@ -26,10 +26,11 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
-    testImplementation 'org.robolectric:robolectric:3.3.2'
+    testImplementation 'org.robolectric:robolectric:4.3'
     testImplementation 'org.mockito:mockito-core:2.7.22'
     testImplementation 'junit:junit:4.12'
+    testImplementation("org.assertj:assertj-core:3.11.1")
     testImplementation 'com.squareup.assertj:assertj-android:1.0.0'
 }
 
-apply from: 'maven-publish.gradle'
+//apply from: 'maven-publish.gradle'
