@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
@@ -374,6 +375,7 @@ public class DragItemRecyclerView extends RecyclerView implements AutoScroller.A
     }
 
     boolean startDrag(View itemView, long itemId, float x, float y) {
+        Log.e("HOAN","startDrag" );
         int dragItemPosition = mAdapter.getPositionForItemId(itemId);
         if (!mDragEnabled || (mCanNotDragAboveTop && dragItemPosition == 0)
                 || (mCanNotDragBelowBottom && dragItemPosition == mAdapter.getItemCount() - 1)) {
@@ -403,6 +405,7 @@ public class DragItemRecyclerView extends RecyclerView implements AutoScroller.A
     }
 
     void onDragging(float x, float y) {
+        Log.e("HOAN","onDragging" );
         if (mDragState == DragState.DRAG_ENDED) {
             return;
         }
@@ -422,6 +425,7 @@ public class DragItemRecyclerView extends RecyclerView implements AutoScroller.A
     }
 
     void onDragEnded() {
+        Log.e("HOAN","onDragEnded" );
         // Need check because sometimes the framework calls drag end twice in a row
         if (mDragState == DragState.DRAG_ENDED) {
             return;

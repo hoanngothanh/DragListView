@@ -134,7 +134,7 @@ public class DragItem {
         mRealDragView = startFromView;
         onBindDragView(startFromView, mDragView);
         onMeasureDragView(startFromView, mDragView);
-        onStartDragAnimation(mDragView);
+//        onStartDragAnimation(mDragView);
 
         mRealStartX = startFromView.getX() - (mDragView.getMeasuredWidth() - startFromView.getMeasuredWidth()) / 2f + mDragView
                 .getMeasuredWidth() / 2f;
@@ -145,23 +145,25 @@ public class DragItem {
             mPosTouchDx = 0;
             mPosTouchDy = 0;
             setPosition(touchX, touchY);
-//            setAnimationDx(mRealStartX - touchX);
-//            setAnimationDY(mRealStartY - touchY);
-//
-//            PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("AnimationDx", mAnimationDx, 0);
-//            PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("AnimationDY", mAnimationDy, 0);
-//            ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(this, pvhX, pvhY);
-//            anim.setInterpolator(new DecelerateInterpolator());
-//            anim.setDuration(ANIMATION_DURATION);
-//            anim.start();
+            setAnimationDx(mRealStartX - touchX);
+            setAnimationDY(mRealStartY - touchY);
+
+            PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("AnimationDx", mAnimationDx, 0);
+            PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("AnimationDY", mAnimationDy, 0);
+            ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(this, pvhX, pvhY);
+            anim.setInterpolator(new DecelerateInterpolator());
+            anim.setDuration(ANIMATION_DURATION);
+            anim.start();
             Log.d(TAG, String.format("touchX : %s, touchY: %s", touchX, touchY));
             Log.d(TAG, String.format("startFromViewX : %s, startFromViewY: %s", startFromView.getX(), startFromView.getY()));
-            Log.d(TAG, String.format("startFromView.getMeasuredWidth() : %s, startFromViewY: %s", startFromView.getX(), startFromView.getY()));
+            Log.d(TAG, String.format("startFromView.getMeasuredWidth() : %s,  startFromView.getMeasuredHeight(): %s", startFromView.getMeasuredWidth(), startFromView.getMeasuredHeight()));
             Log.d(TAG, String.format("mDragView.getMeasuredWidth() : %s, mDragView.getMeasuredHeight(): %s", mDragView.getMeasuredWidth(), mDragView.getMeasuredHeight()));
-            Log.d(TAG, String.format("mRealStartX : %s, mDragView.getMeasuredHeight(): %s", mRealStartX, mRealStartY));
+            Log.d(TAG, String.format("mRealStartX : %s, mRealStartY: %s", mRealStartX, mRealStartY));
         } else {
+
             mPosTouchDx = mRealStartX - touchX;
             mPosTouchDy = mRealStartY - touchY;
+            Log.w(TAG, String.format("set position  mPosTouchDx : %s, mPosTouchDy: %s", mPosTouchDx, mPosTouchDy));
             setPosition(touchX, touchY);
         }
     }
@@ -169,7 +171,7 @@ public class DragItem {
     void endDrag(View endToView, AnimatorListenerAdapter listener) {
         onEndDragAnimation(mDragView);
 
-        float endX = endToView.getX() - (mDragView.getMeasuredWidth() - endToView.getMeasuredWidth()) / 2f + mDragView
+        float endX = endToView.getX() - (mDragView.getMeasuredWidth() - endToView.getMeasuredWidth()) * 4f / 5f + mDragView
                 .getMeasuredWidth() / 2f;
         float endY = endToView.getY() - (mDragView.getMeasuredHeight() - endToView.getMeasuredHeight()) / 2f + mDragView
                 .getMeasuredHeight() / 2f;
@@ -216,6 +218,7 @@ public class DragItem {
 
     void setPosition(float touchX, float touchY) {
         if (mCanDragHorizontally) {
+            Log.w("Hoan","setPosition touchx "+ touchX+" touchY "+  touchY);
             mPosX = touchX + mPosTouchDx;
         } else {
             mPosX = mRealStartX;
@@ -240,10 +243,13 @@ public class DragItem {
 
     private void updatePosition() {
         if (mCanDragHorizontally) {
-            Log.i(TAG,String.format("mPosX %s  mOffsetX %s mAnimationDx %s mDragView.getMeasuredWidth() %s",mPosX , mOffsetX , mAnimationDx , mDragView.getMeasuredWidth()));
-            mDragView.setX(mPosX + mOffsetX + mAnimationDx - (mDragView.getMeasuredWidth()*4)/5);
+            Log.i(TAG, String.format("mPosX %s  mOffsetX %s mAnimationDx %s mDragView.getMeasuredWidth() %s", mPosX, mOffsetX, mAnimationDx, mDragView.getMeasuredWidth()));
+            float value = mPosX + mOffsetX + mAnimationDx - (mDragView.getMeasuredWidth())  / 2f;
+            Log.w("Hoan ", "value "+ value);
+            mDragView.setX(value);
         }
         if (mCanDragVertically) {
+//            Log.i(TAG, String.format("mPosY %s  mOffsetY %s mAnimationDy %s mDragView.getMeasuredHeight() %s", mPosY, mOffsetY, mAnimationDy, mDragView.getMeasuredHeight()));
             mDragView.setY(mPosY + mOffsetY + mAnimationDy - mDragView.getMeasuredHeight() / 2f);
         }
 

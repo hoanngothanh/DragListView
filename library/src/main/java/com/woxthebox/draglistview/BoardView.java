@@ -25,6 +25,7 @@ import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -310,8 +311,10 @@ public class BoardView extends HorizontalScrollView implements AutoScroller.Auto
             // then update the drag item position to prevent stuttering item
             if (mAutoScroller.isAutoScrolling() && isDragging()) {
                 if (isDraggingColumn()) {
+                    Log.e("HOAN","fdfdfdfd" + getRelativeViewTouchX((View) mCurrentRecyclerView.getParent()));
                     mDragColumn.setPosition(mTouchX + getScrollX() - mDragColumnStartScrollX, mTouchY);
                 } else {
+                    Log.e("HOAN","fdfdfdfd" + getRelativeViewTouchX((View) mCurrentRecyclerView.getParent()));
                     mDragItem.setPosition(getRelativeViewTouchX((View) mCurrentRecyclerView.getParent()), getRelativeViewTouchY(mCurrentRecyclerView));
                 }
             }
